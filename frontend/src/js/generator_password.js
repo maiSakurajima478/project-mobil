@@ -5,6 +5,8 @@ export default function generatePassword(passwordLength, includeUppercase, inclu
     if (includeNumbers) validChars += '0123456789';
     if (includeSymbols) validChars += '!@#$%^&*()_+-={}[]|\\:;"<>,.?/~';
   
+    if (passwordLength < 8 || passwordLength > 18) passwordLength = 12; 
+
     let generatedPassword = '';
   
     for (let i = 0; i < passwordLength; i++) {
