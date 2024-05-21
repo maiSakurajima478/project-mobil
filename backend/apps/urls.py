@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views import CreateAppView, AppListView, DescryptAppView, AppDeleteView, AppUpdateView
 
-
 urlpatterns = [
     path('', CreateAppView.as_view(), name='create_app'),
     path('list/', AppListView.as_view(), name='apps'),
