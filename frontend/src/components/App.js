@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
@@ -40,7 +41,7 @@ const App = ({id, name}) => {
                     <Text style={styles.text}>{ name }</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={fetchDelete}>
-                    <Text style={styles.textButton}>Delete</Text>
+                <Icon name="times-circle" size={30} color="#900" />
                 </TouchableOpacity>
             </View>
         </View>

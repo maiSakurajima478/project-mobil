@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableNativeFeedback, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableNativeFeedback, TouchableOpacity, Alert, TextInput } from 'react-native';
 import generatePassword from '../js/generator_password';
 import CheckBox from 'expo-checkbox';
+import Icon from "react-native-vector-icons/FontAwesome";
+import * as Clipboard from 'expo-clipboard';
+
 
 const PasswordGenerate = () => {
     const [myPassword, setMyPassword] = useState('My password');
@@ -15,10 +18,19 @@ const PasswordGenerate = () => {
       setMyPassword(newPassword);
     }
 
+    const copyToClipboard = () => {
+      Clipboard.setStringAsync(myPassword)
+      Alert.alert('Copy!!');
+    };
+
   return (
         <View style={styles.container}>
-            <Text style={[styles.text, styles.password]}>{myPassword}</Text>
-
+            <View style={styles.containerPassword}>
+              <Text style={[styles.text, styles.password]}>{myPassword}</Text>
+              <TouchableOpacity onPress={copyToClipboard}>
+                <Icon name="copy" style={{marginTop : 10, marginHorizontal: 2}} size={30} color="#900" />
+              </TouchableOpacity>
+            </View>
             <View style={styles.checkboxContainer}>
               <CheckBox
                 style={styles.checkbox}
@@ -78,17 +90,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  containerPassword : {
+    flexDirection : 'row',
+    backgroundColor : '#F6EEC9',
+    paddingHorizontal : 15,
+    paddingVertical : 10,
+    borderRadius : 5,
+    marginBottom : 15,
+  },
+
   text :{
     fontSize: 35,
     color: '#240750'
   },
 
   password : {
-    backgroundColor : '#F6EEC9',
-    paddingHorizontal : 15,
-    paddingVertical : 10,
-    borderRadius : 5,
-    marginBottom : 15,
   },  
 
   button: {
