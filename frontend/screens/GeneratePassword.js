@@ -1,9 +1,9 @@
 import PasswordGenerate from "../src/components/PasswordGenerate";
-import ContainerComponent from "../src/components/ContainerComponent";
+import Container from "../src/components/Container";
 
 const GeneratePassword = () => {
     return (
-        <ContainerComponent Component={PasswordGenerate} />
+        <Container Component={PasswordGenerate} />
     );
 };
 

@@ -1,14 +1,45 @@
+import { useContext, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../context/AuthContext";
 
-const App = ({name}) => {
+const App = ({id, name}) => {
+
+    const { userToken } = useContext(AuthContext);
+    const [error, setError] = useState(null);
+    const navigation = useNavigation();
+
+    const fetchDelete = async () => {
+        try {    
+
+            const token = userToken; 
+                
+            const config = {
+                headers: {
+                    Authorization: `Token ${token}`
+                }
+            };
+
+            const response = await axios.delete(`https://passwordgenerate.pythonanywhere.com/apps/${id}/delete/`, config);
+    
+    
+            console.log(response.data);
+            navigation.navigate('Home');
+        } catch (error) {
+            console.log(error);
+            setError('Registration failed. Please try again.');
+        }
+    };
+
     return (
         <View style={styles.container} >
             <View style={styles.containerApp}>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={() => navigation.navigate('Detail', { itemId: id})} >
                     <Text style={styles.text}>{ name }</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={fetchDelete}>
                     <Text style={styles.textButton}>Delete</Text>
                 </TouchableOpacity>
             </View>

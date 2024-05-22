@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,  useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text, TextInput } from "react-native";
-import axios from '../../axios/axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from '../../context/AuthContext';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -11,30 +10,13 @@ const SignUp = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const navigation = useNavigation()
+    const { register, isLoading } = useContext(AuthContext);
 
-    const handleSignUp = async () => {
-        try {
-            // Validar las contraseñas
-            if (password !== confirmPassword) {
-                setError('Passwords do not match');
-                return;
-            }
-    
-            // Realizar la solicitud de registro
-            const response = await axios.post('https://passwordgenerate.pythonanywhere.com/accounts/register/', {
-                email: email,
-                password: password,
-                confirm_password : confirmPassword,
-            });
-
-            const { token } = response.data;
-            await AsyncStorage.setItem('token', token),
-            navigation.navigate('Home');
-        } catch (error) {
-            console.error('Error:', error);
-            setError('Registration failed. Please try again.');
-        }
+    const handleRegister = () => {
+        register(email, password, confirmPassword)
+          .catch((e) => setError('Register failed. Please check your credentials and try again.'));
     };
+
 
     return (
         <View style={styles.container}>
@@ -44,31 +26,35 @@ const SignUp = () => {
                 style={styles.textInput}
                 placeholder="example@gmail.com"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={text => setEmail(text)}
             />
             <TextInput
                 secureTextEntry={true}
                 style={styles.textInput}
                 placeholder="password"
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={text => setPassword(text)}
             />
             <TextInput
                 secureTextEntry={true}
                 style={styles.textInput}
                 placeholder="confirm password"
                 value={confirmPassword}
-                onChangeText={setConfirmPassword}
+                onChangeText={text => setConfirmPassword(text)}
             />
             {error ? <Text style={styles.error}>{error}</Text> : null}
-            <TouchableOpacity onPress={handleSignUp} style={styles.containerButton}>
+            <TouchableOpacity onPress={handleRegister} style={styles.containerButton}>
             <LinearGradient
                 style={styles.button}
                 colors={['#4c669f', '#3b5998', '#192f6a']}
                 start={{x: 1, y:0}}
                 end={{x : 0, y : 1}}
             >
-                <Text style={styles.textButton}>Register</Text>
+                    {isLoading ? (
+                        <ActivityIndicator color="#fff" />
+                    ) : (
+                        <Text style={styles.textButton}>Register</Text>
+                    )}
             </LinearGradient>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>

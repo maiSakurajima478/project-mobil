@@ -1,12 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import App from "../src/components/App";
-import ContainerComponent from "../src/components/ContainerComponent";
+import Container from "../src/components/Container";
 import ListApps from "../src/components/ListApps";
 
 
 const Home = () => {
     return (
-        <ContainerComponent Component={ListApps} />
+        <Container Component={ListApps} />
     );
 };
 

@@ -1,12 +1,12 @@
 import { View, StyleSheet } from "react-native";
 import Navbar from "./Navbar";
 
-const ContainerComponent = ({ Component }) => {
+const Container = ({ Component, ...props }) => {
 
     return (
         <View>
             <Navbar />
-            <Component />
+            <Component {...props} />
         </View>
     );
 
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default ContainerComponent;
+export default Container;
